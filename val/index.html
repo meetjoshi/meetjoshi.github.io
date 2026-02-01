@@ -507,7 +507,7 @@
     const scale1 = { value: 1 };
     const scale2 = { value: 1 };
     escapeButton(noBtn, yesBtn, scale1);
-    escapeButton(noBtn2, yesBtn2, scale2);
+    // noBtn2 escape will be initialized when stage 2 becomes visible
 
     // Multi-stage handling
     let currentStage = 1;
@@ -520,6 +520,8 @@
         // Reset scale for stage 2
         scale2.value = 1;
         yesBtn2.style.transform = 'scale(1)';
+        // Initialize escape behavior now that button is visible
+        escapeButton(noBtn2, yesBtn2, scale2);
       } else if (stage === 2) {
         showCelebration();
       }
