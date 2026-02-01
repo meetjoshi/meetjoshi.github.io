@@ -313,30 +313,29 @@
       id="cuteGif"
       onerror="this.style.display='none'; document.getElementById('gifFallback').style.display='block';"
     >
-    <div id="gifFallback" style="display:none; font-size: 60px; margin-bottom: 15px;">🧸💕</div>
+    <div id="gifFallback" style="display:none; font-size: 60px; margin-bottom: 15px;">😏🔥</div>
 
     <!-- Stage 1: Initial Question -->
     <div id="stage1">
-      <h1>Hey <span class="name-highlight" id="personName">Beautiful</span>, Will you be my Valentine? 💖</h1>
+      <h1><span class="name-highlight" id="personName">Beautiful</span>… you were expecting this question, weren't you? 😏💘</h1>
       <div class="buttons">
-        <button id="yes" onclick="handleYes(1)">Yes 💘</button>
-        <button id="no">No 😅</button>
+        <button id="yes" onclick="handleYes(1)">Yes 😌</button>
+        <button id="no">Let me pretend I didn't 🫣</button>
       </div>
     </div>
 
     <!-- Stage 2: Confirmation -->
     <div id="stage2" class="hidden">
-      <h1>Are you sure? Because I really really like you! 🥺💕</h1>
+      <h1><span id="personName3">Beautiful</span>, quick question 😌<br>You free on Valentine's Day?</h1>
       <div class="buttons">
-        <button id="yes2" onclick="handleYes(2)">Absolutely! 💖</button>
-        <button id="no2">Maybe... 🤔</button>
+        <button id="yes2" onclick="handleYes(2)">For you? Maybe 🤔</button>
+        <button id="no2">Convince me 😌</button>
       </div>
-      <p class="stage-message">There's no escape from my love!</p>
     </div>
 
     <!-- Stage 3: Celebration -->
     <div id="stage3" class="hidden celebration">
-      <h1>Yayyy! 🎉💕</h1>
+      <h1>Good choice 😌💘</h1>
       <img 
         src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3htdm05aWkwazJ3cnF1azQzbmk0c2YxazUxeWd2ZW0zYW5jamhiOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/b84mdlKx8Ud8o7w50j/giphy.gif"
         alt="Celebration"
@@ -346,8 +345,8 @@
       <p style="font-size: 1.2rem; color: #666; margin-top: 15px;">
         I knew you'd say yes, <span class="name-highlight" id="personName2">Beautiful</span>! 
       </p>
-      <p style="font-size: 1.5rem; margin-top: 20px;">Date confirmed! 😘💘</p>
-      <p style="font-size: 3rem; margin-top: 20px;">💑</p>
+      <p style="font-size: 1.5rem; margin-top: 20px;">Date confirmed! 😘🔥</p>
+      <p style="font-size: 3rem; margin-top: 20px;">💋</p>
     </div>
   </div>
 
@@ -367,6 +366,7 @@
     // Set custom name
     document.getElementById('personName').textContent = personName;
     document.getElementById('personName2').textContent = personName;
+    document.getElementById('personName3').textContent = personName;
     document.title = `Valentine for ${personName}?`;
 
     // Set custom photo if provided
@@ -422,11 +422,11 @@
       const countdownEl = document.getElementById('countdown');
       
       if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-        countdownEl.textContent = "💝 It's Valentine's Day! 💝";
+        countdownEl.textContent = "🔥 It's Valentine's Day! 🔥";
       } else if (days === 0) {
         countdownEl.textContent = `⏰ ${hours}h ${minutes}m ${seconds}s until Valentine's Day!`;
       } else {
-        countdownEl.textContent = `💕 ${days} days, ${hours}h ${minutes}m ${seconds}s until Valentine's Day!`;
+        countdownEl.textContent = `😘 ${days} days, ${hours}h ${minutes}m ${seconds}s until Valentine's Day!`;
       }
     }
     updateCountdown();
@@ -434,7 +434,7 @@
 
     // Floating Hearts
     const heartsContainer = document.getElementById('heartsContainer');
-    const heartEmojis = ['💖', '💕', '💗', '💓', '💘', '💝', '❤️', '🩷'];
+    const heartEmojis = ['😘', '💋', '🔥', '😏', '💘', '😉', '✨'];
 
     function createFloatingHeart() {
       const heart = document.createElement('div');
@@ -549,7 +549,7 @@
 
     function launchConfetti() {
       const colors = ['#ff4d6d', '#ff758f', '#ffb3c1', '#ffe5ec', '#ff0a54', '#ff477e', '#f72585'];
-      const shapes = ['❤️', '💕', '💖', '🎉', '✨', '💘'];
+      const shapes = ['😘', '💋', '🔥', '🎉', '✨', '😏'];
       
       for (let i = 0; i < 100; i++) {
         setTimeout(() => {
