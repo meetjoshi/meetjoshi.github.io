@@ -96,9 +96,9 @@
       width: 120px;
       height: 120px;
       object-fit: cover;
-      clip-path: path('M60,20 C90,-10 120,30 60,80 C0,30 30,-10 60,20');
-      border: 3px solid var(--primary-pink);
+      border: 4px solid var(--primary-pink);
       border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
     }
 
     /* Cute GIF */
@@ -377,7 +377,8 @@
     const photoContainer = document.getElementById('photoContainer');
     const celebrationPhoto = document.getElementById('celebrationPhoto');
     if (customPhoto) {
-      photoContainer.innerHTML = `<img src="${customPhoto}" alt="Our Photo" class="heart-photo" onerror="this.parentElement.style.display='none'">`;
+      console.log('Custom photo URL:', customPhoto);
+      photoContainer.innerHTML = `<img src="${customPhoto}" alt="Our Photo" class="heart-photo" onerror="console.error('Photo failed to load:', this.src); this.parentElement.style.display='none'">`;
       photoContainer.classList.remove('hidden');
       celebrationPhoto.innerHTML = `<img src="${customPhoto}" alt="Our Photo" class="heart-photo" style="width:150px;height:150px;" onerror="this.style.display='none'">`;
     }
