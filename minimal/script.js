@@ -47,10 +47,12 @@
         lbImg.src = img.src;
         lbCaption.textContent = img.dataset.caption || '';
         lightbox.classList.add('active');
+        document.body.classList.add('lb-open');
     }
 
     function closeLightbox() {
         lightbox.classList.remove('active');
+        document.body.classList.remove('lb-open');
     }
 
     function showImg(idx) {
