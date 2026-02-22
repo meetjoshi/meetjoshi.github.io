@@ -73,7 +73,6 @@
             display: flex;
             align-items: center;
             min-height: 24px;
-            position: relative;
         }
 
         #input-line .prompt {
@@ -81,6 +80,12 @@
             font-weight: 700;
             white-space: pre;
             flex-shrink: 0;
+        }
+
+        .input-area {
+            position: relative;
+            flex: 1;
+            min-width: 0;
         }
 
         #mirror {
@@ -103,10 +108,19 @@
 
         #cmd {
             position: absolute;
-            left: -9999px;
-            opacity: 0;
-            width: 0;
-            height: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: transparent;
+            caret-color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: inherit;
+            padding: 0;
+            margin: 0;
         }
 
         .accent { color: var(--accent); }
@@ -130,9 +144,83 @@
             display: none;
         }
 
+        #gallery-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #gallery-overlay.active { display: flex; }
+
+        #gallery-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            color: var(--dim);
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 2;
+            font-family: 'Fira Code', monospace;
+            background: none;
+            border: none;
+        }
+
+        #gallery-close:hover { color: #fff; }
+
+        #gallery-img {
+            max-width: 85vw;
+            max-height: 70vh;
+            object-fit: contain;
+            border: 1px solid #222;
+            border-radius: 4px;
+        }
+
+        #gallery-caption {
+            color: var(--accent);
+            font-family: 'Fira Code', monospace;
+            margin-top: 16px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        #gallery-counter {
+            color: var(--dim);
+            font-family: 'Fira Code', monospace;
+            margin-top: 6px;
+            font-size: 12px;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dim);
+            font-size: 36px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Fira Code', monospace;
+            padding: 20px;
+            z-index: 2;
+        }
+
+        .gallery-nav:hover { color: #fff; }
+        #gallery-prev { left: 8px; }
+        #gallery-next { right: 8px; }
+
         @media (max-width: 600px) {
             html, body { font-size: 12px; }
             #terminal { padding: 12px; }
+            #gallery-img { max-width: 95vw; max-height: 60vh; }
+            .gallery-nav { font-size: 24px; padding: 12px; }
+            #gallery-close { font-size: 22px; top: 10px; right: 12px; }
         }
     </style>
 </head>
@@ -142,9 +230,19 @@
         <div id="output"></div>
         <div id="input-line" style="display:none;">
             <span class="prompt">meet@portfolio:~$ </span>
-            <span id="mirror"></span><span class="cursor"></span>
-            <input type="text" id="cmd" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
+            <div class="input-area">
+                <span id="mirror"></span><span class="cursor"></span>
+                <input type="text" id="cmd" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
+            </div>
         </div>
+    </div>
+    <div id="gallery-overlay">
+        <button id="gallery-close">✕</button>
+        <button class="gallery-nav" id="gallery-prev">‹</button>
+        <button class="gallery-nav" id="gallery-next">›</button>
+        <img id="gallery-img" src="" alt="">
+        <div id="gallery-caption"></div>
+        <div id="gallery-counter"></div>
     </div>
     <canvas id="matrix-canvas"></canvas>
 
@@ -275,6 +373,7 @@
   <span class="cyan">achievements</span>   Competitive programming & patent
   <span class="cyan">education</span>      Academic background
   <span class="cyan">social</span>         Find me online
+  <span class="cyan">gallery</span>        Photo viewer
   <span class="cyan">neofetch</span>       System info card
 <span class="dim">  ─────────────────────────────────────</span>
   <span class="cyan">theme</span> <span class="dim">[green|amber|white]</span>
@@ -501,6 +600,71 @@
             startMatrix();
         };
 
+        // ── Gallery ────────────────────────────────────────
+        const photos = [
+            { file: 'aurora-back-pose.jpg',                       caption: 'Aurora' },
+            { file: 'aurora-side-pose.jpg',                       caption: 'Aurora' },
+            { file: 'aurora-side-pose-ghibli.jpg',                caption: 'Aurora — Ghibli Edit' },
+            { file: 'cappadocia-hot-air-balloons-side-pose.jpg',  caption: 'Cappadocia' },
+            { file: 'eiffel-tower-day-front-pose.jpg',            caption: 'Paris — Eiffel Tower' },
+            { file: 'eiffel-tower-day-side-pose.jpg',             caption: 'Paris — Eiffel Tower' },
+            { file: 'santorini-night-side-pose.jpg',              caption: 'Santorini' },
+            { file: 'public-speaking.jpg',                        caption: 'Public Speaking' },
+        ];
+
+        const galleryOverlay = $('#gallery-overlay');
+        const galleryImg = $('#gallery-img');
+        const galleryCaption = $('#gallery-caption');
+        const galleryCounter = $('#gallery-counter');
+        let galleryIdx = 0;
+
+        function showGalleryPhoto(idx) {
+            galleryIdx = ((idx % photos.length) + photos.length) % photos.length;
+            const p = photos[galleryIdx];
+            galleryImg.src = 'assets/photos/' + p.file;
+            galleryImg.alt = p.caption;
+            galleryCaption.textContent = p.caption;
+            galleryCounter.textContent = (galleryIdx + 1) + ' / ' + photos.length;
+        }
+
+        function openGallery(startIdx) {
+            showGalleryPhoto(startIdx || 0);
+            galleryOverlay.classList.add('active');
+        }
+
+        function closeGallery() {
+            galleryOverlay.classList.remove('active');
+            focusInput();
+        }
+
+        $('#gallery-close').addEventListener('click', closeGallery);
+        $('#gallery-prev').addEventListener('click', () => showGalleryPhoto(galleryIdx - 1));
+        $('#gallery-next').addEventListener('click', () => showGalleryPhoto(galleryIdx + 1));
+
+        galleryOverlay.addEventListener('click', (e) => {
+            if (e.target === galleryOverlay) closeGallery();
+        });
+
+        let touchStartX = 0;
+        galleryOverlay.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].clientX;
+        }, { passive: true });
+        galleryOverlay.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 50) {
+                showGalleryPhoto(galleryIdx + (dx < 0 ? 1 : -1));
+            }
+        }, { passive: true });
+
+        commands.gallery = function() {
+            addOutput(
+`<span class="accent bold">  Gallery</span>
+<span class="dim">  ─────────────────────────────────────</span>
+  Opening photo viewer...
+  <span class="dim">← → to navigate · Esc to close · Swipe on mobile</span>`);
+            setTimeout(() => openGallery(0), 300);
+        };
+
         function cmdSudo(fullInput) {
             if (fullInput.match(/sudo\s+rm\s+(-rf?\s+\/|\/)/i)) {
                 addOutput(
@@ -596,7 +760,7 @@
         });
 
         cmd.addEventListener('keydown', (e) => {
-            if (!state.booted) return;
+            if (!state.booted || galleryOverlay.classList.contains('active')) return;
 
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -637,6 +801,13 @@
 
         terminal.addEventListener('click', (e) => {
             if (e.target.tagName !== 'A') focusInput();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!galleryOverlay.classList.contains('active')) return;
+            if (e.key === 'Escape') { closeGallery(); e.preventDefault(); }
+            else if (e.key === 'ArrowLeft') { showGalleryPhoto(galleryIdx - 1); e.preventDefault(); }
+            else if (e.key === 'ArrowRight') { showGalleryPhoto(galleryIdx + 1); e.preventDefault(); }
         });
 
         // ── Start ──────────────────────────────────────────
