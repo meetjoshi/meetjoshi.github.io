@@ -1,0 +1,454 @@
+:root {
+    --bg: #0e0e0e;
+    --tile: #161616;
+    --tile-hover: #1a1a1a;
+    --fg: #f0f0f0;
+    --fg-muted: #888;
+    --fg-dim: #555;
+    --accent: #4a9eff;
+    --accent-soft: rgba(74, 158, 255, 0.12);
+    --border: #222;
+    --radius: 16px;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 32px 20px;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { opacity: 0.8; }
+
+/* ── Bento Grid ──────────────────────── */
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 860px;
+    width: 100%;
+}
+
+/* ── Tile Base ───────────────────────── */
+
+.tile {
+    background: var(--tile);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+}
+
+.tile.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    border-color: #2a2a2a;
+}
+
+.tile-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+
+.tile-detail {
+    font-size: 14px;
+    color: var(--fg-muted);
+}
+
+/* ── Name Tile ───────────────────────── */
+
+.tile-name {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tile-name h1 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+
+.tile-sub {
+    font-size: 15px;
+    color: var(--fg-muted);
+}
+
+/* ── Status Tile ─────────────────────── */
+
+.tile-status {
+    grid-column: span 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #39ff14;
+    box-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+    margin-bottom: 12px;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.status-label {
+    font-size: 12px;
+    color: var(--fg-dim);
+    margin-bottom: 4px;
+}
+
+.tile-status h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.status-focus {
+    font-size: 13px;
+    color: var(--fg-muted);
+}
+
+/* ── Photo Tiles ─────────────────────── */
+
+.tile-photo {
+    grid-column: span 1;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.tile-photo-tall {
+    grid-row: span 2;
+}
+
+.tile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.tile-photo:hover img {
+    transform: scale(1.05);
+}
+
+.photo-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 16px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+    font-size: 12px;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* ── About Tile ──────────────────────── */
+
+.tile-about {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+}
+
+.tile-about p {
+    font-size: 15px;
+    color: var(--fg-muted);
+    line-height: 1.8;
+}
+
+/* ── Education Tile ──────────────────── */
+
+.tile-edu {
+    grid-column: span 1;
+}
+
+.tile-edu h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+/* ── Experience Tile ─────────────────── */
+
+.tile-exp {
+    grid-column: span 2;
+}
+
+.exp-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.exp-entry {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.exp-entry:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.exp-entry h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.exp-meta {
+    font-size: 12px;
+    color: var(--fg-muted);
+}
+
+/* ── Skills Tile ─────────────────────── */
+
+.tile-skills {
+    grid-column: span 2;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tags span {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.skill-tags span:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+/* ── Achievement Hero ────────────────── */
+
+.tile-ach-hero {
+    grid-column: span 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #161616 0%, #1a1a2e 100%);
+    border-color: rgba(74, 158, 255, 0.2);
+}
+
+.ach-rank {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.ach-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 2px;
+}
+
+.ach-sub {
+    font-size: 12px;
+    color: var(--fg-muted);
+}
+
+/* ── Competitions Tile ───────────────── */
+
+.tile-comps {
+    grid-column: span 2;
+}
+
+.comp-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comp-list li {
+    font-size: 14px;
+    color: var(--fg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.comp-list li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.comp-list li span {
+    font-size: 11px;
+    color: var(--fg-dim);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ── Patent Tile ─────────────────────── */
+
+.tile-patent {
+    grid-column: span 1;
+}
+
+.patent-text {
+    font-size: 14px;
+    color: var(--fg-muted);
+    line-height: 1.7;
+}
+
+/* ── Gallery Tile ────────────────────── */
+
+.tile-gallery {
+    grid-column: span 3;
+    padding: 0;
+    overflow: hidden;
+}
+
+.gallery-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: 100%;
+    min-height: 160px;
+}
+
+.gallery-strip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-strip img:hover {
+    transform: scale(1.08);
+}
+
+/* ── Links Tile ──────────────────────── */
+
+.tile-links {
+    grid-column: span 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tile-links a {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--fg-muted);
+    text-align: center;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.tile-links a:hover {
+    border-color: var(--accent);
+    color: var(--fg);
+    background: var(--accent-soft);
+    opacity: 1;
+}
+
+/* ── Responsive ──────────────────────── */
+
+@media (max-width: 768px) {
+    body { padding: 16px 12px; }
+
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .tile { padding: 20px; border-radius: 12px; }
+
+    .tile-name { grid-column: span 2; }
+    .tile-status { grid-column: span 1; }
+    .tile-photo-tall { grid-row: span 1; }
+    .tile-about { grid-column: span 2; }
+    .tile-edu { grid-column: span 1; }
+    .tile-exp { grid-column: span 2; }
+    .tile-skills { grid-column: span 2; }
+    .tile-ach-hero { grid-column: span 1; }
+    .tile-comps { grid-column: span 2; }
+    .tile-patent { grid-column: span 1; }
+    .tile-gallery { grid-column: span 2; }
+    .tile-links { grid-column: span 1; }
+
+    .gallery-strip { grid-template-columns: repeat(4, 1fr); min-height: 120px; }
+}
+
+@media (max-width: 480px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .tile-name,
+    .tile-status,
+    .tile-photo,
+    .tile-photo-tall,
+    .tile-about,
+    .tile-edu,
+    .tile-exp,
+    .tile-skills,
+    .tile-ach-hero,
+    .tile-comps,
+    .tile-patent,
+    .tile-gallery,
+    .tile-links {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .tile-photo { aspect-ratio: 16/9; }
+    .gallery-strip { grid-template-columns: repeat(2, 1fr); min-height: 140px; }
+}
