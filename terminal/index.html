@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Meet Joshi</title>
+    <meta name="description" content="Meet Joshi — I make machines smarter for a living. Software Engineer, AI Builder, IIT Kharagpur.">
+    <meta property="og:title" content="Meet Joshi">
+    <meta property="og:description" content="I make machines smarter for a living.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://meetjoshi.github.io">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="scanlines"></div>
+    <div id="terminal" tabindex="0">
+        <div id="output"></div>
+        <div id="input-line" style="display:none;">
+            <span class="prompt">meet@portfolio:~$ </span>
+            <div class="input-area">
+                <span id="mirror"></span><span class="cursor"></span>
+                <input type="text" id="cmd" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
+            </div>
+        </div>
+    </div>
+    <div id="gallery-overlay">
+        <button id="gallery-close">✕</button>
+        <button class="gallery-nav" id="gallery-prev">‹</button>
+        <button class="gallery-nav" id="gallery-next">›</button>
+        <img id="gallery-img" src="" alt="">
+        <div id="gallery-caption"></div>
+        <div id="gallery-counter"></div>
+    </div>
+    <canvas id="matrix-canvas"></canvas>
+    <script src="terminal.js"></script>
+</body>
+</html>

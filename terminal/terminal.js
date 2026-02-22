@@ -372,7 +372,7 @@
     function showGalleryPhoto(idx) {
         galleryIdx = ((idx % photos.length) + photos.length) % photos.length;
         const p = photos[galleryIdx];
-        galleryImg.src = 'assets/photos/' + p.file;
+        galleryImg.src = '../assets/photos/' + p.file;
         galleryImg.alt = p.caption;
         galleryCaption.textContent = p.caption;
         galleryCounter.textContent = (galleryIdx + 1) + ' / ' + photos.length;

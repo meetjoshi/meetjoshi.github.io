@@ -2,39 +2,302 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meet Joshi</title>
-    <meta name="description" content="Meet Joshi — I make machines smarter for a living. Software Engineer, AI Builder, IIT Kharagpur.">
+    <meta name="description" content="Meet Joshi - I make machines smarter for a living.">
     <meta property="og:title" content="Meet Joshi">
     <meta property="og:description" content="I make machines smarter for a living.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://meetjoshi.github.io">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════
+           CONFIG: Set redirect to auto-forward
+           to a specific version, or leave null
+           to show this launcher page.
+           ═══════════════════════════════════════ */
+
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #111;
+            --fg: #eee;
+            --fg-dim: #666;
+            --fg-muted: #999;
+            --accent: #4a9eff;
+            --border: #1a1a1a;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--font);
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { opacity: 0.85; }
+
+        .wrapper {
+            width: 100%;
+            max-width: 720px;
+            padding: 0 24px;
+        }
+
+        /* ── Header ── */
+        header {
+            text-align: center;
+            padding: 80px 24px 48px;
+        }
+
+        .name {
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            color: var(--fg-muted);
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .header-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .header-links a {
+            font-size: 13px;
+            color: var(--fg-dim);
+            transition: color 0.2s;
+        }
+
+        .header-links a:hover { color: var(--fg); }
+
+        /* ── Versions Grid ── */
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--fg-dim);
+            margin-bottom: 20px;
+            padding-top: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding-bottom: 80px;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--fg);
+            transition: border-color 0.2s, transform 0.15s;
+        }
+
+        .card:hover {
+            border-color: #333;
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+
+        .card-icon {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            background: rgba(74, 158, 255, 0.08);
+            border: 1px solid rgba(74, 158, 255, 0.15);
+            color: var(--accent);
+        }
+
+        .card-text h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .card-text p {
+            font-size: 12px;
+            color: var(--fg-muted);
+        }
+
+        .card-arrow {
+            margin-left: auto;
+            color: var(--fg-dim);
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover .card-arrow {
+            transform: translateX(3px);
+            color: var(--fg-muted);
+        }
+
+        .card.featured {
+            border-color: rgba(74, 158, 255, 0.3);
+        }
+
+        .card.featured .card-icon {
+            background: rgba(74, 158, 255, 0.15);
+            border-color: rgba(74, 158, 255, 0.3);
+        }
+
+        .featured-tag {
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            background: rgba(74, 158, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        footer {
+            padding: 24px;
+            text-align: center;
+            color: var(--fg-dim);
+            font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+            header { padding: 56px 20px 36px; }
+            .wrapper { padding: 0 16px; }
+            .card { padding: 16px; gap: 12px; }
+            .card-icon { width: 38px; height: 38px; font-size: 15px; }
+        }
+    </style>
 </head>
 <body>
-    <div id="scanlines"></div>
-    <div id="terminal" tabindex="0">
-        <div id="output"></div>
-        <div id="input-line" style="display:none;">
-            <span class="prompt">meet@portfolio:~$ </span>
-            <div class="input-area">
-                <span id="mirror"></span><span class="cursor"></span>
-                <input type="text" id="cmd" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
-            </div>
+
+    <header>
+        <h1 class="name">Meet Joshi</h1>
+        <p class="tagline">I make machines smarter for a living.</p>
+        <div class="header-links">
+            <a href="https://github.com/meetjoshi" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://linkedin.com/in/meetjoshi" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="mailto:meet.joshi.iitkgp@gmail.com">Email</a>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <p class="section-label">Explore</p>
+        <div class="grid" id="versions-grid">
+            <!-- Populated by script from config -->
         </div>
     </div>
-    <div id="gallery-overlay">
-        <button id="gallery-close">✕</button>
-        <button class="gallery-nav" id="gallery-prev">‹</button>
-        <button class="gallery-nav" id="gallery-next">›</button>
-        <img id="gallery-img" src="" alt="">
-        <div id="gallery-caption"></div>
-        <div id="gallery-counter"></div>
-    </div>
-    <canvas id="matrix-canvas"></canvas>
-    <script src="terminal.js"></script>
+
+    <footer>Meet Joshi</footer>
+
+    <script>
+    (function () {
+        // ╔═══════════════════════════════════════════════════╗
+        // ║  CONFIG                                          ║
+        // ║                                                  ║
+        // ║  redirect: set to a path (e.g. "/terminal/")     ║
+        // ║  to auto-forward visitors. Set to null to show   ║
+        // ║  this launcher page instead.                     ║
+        // ║                                                  ║
+        // ║  featured: the path to highlight as primary.     ║
+        // ║                                                  ║
+        // ║  versions: add/remove/reorder entries here.      ║
+        // ╚═══════════════════════════════════════════════════╝
+
+        var CONFIG = {
+            redirect: null,
+            featured: "/terminal/",
+            versions: [
+                {
+                    path: "/terminal/",
+                    name: "Terminal",
+                    desc: "Hacker-style terminal with interactive commands",
+                    icon: ">_"
+                },
+                {
+                    path: "/minimal/",
+                    name: "Minimal",
+                    desc: "Sleek dark portfolio with clean typography",
+                    icon: "M"
+                },
+                {
+                    path: "/interactive/",
+                    name: "Interactive",
+                    desc: "Scroll-driven cinematic storytelling",
+                    icon: "S"
+                },
+                {
+                    path: "/retro/",
+                    name: "Retro",
+                    desc: "Pixel art RPG character profile",
+                    icon: "R"
+                },
+                {
+                    path: "/links/",
+                    name: "Links",
+                    desc: "Simple social links page",
+                    icon: "@"
+                }
+            ]
+        };
+
+        // Auto-redirect if configured
+        if (CONFIG.redirect) {
+            window.location.replace(CONFIG.redirect);
+            return;
+        }
+
+        // Render version cards
+        var grid = document.getElementById('versions-grid');
+        CONFIG.versions.forEach(function (v) {
+            var isFeatured = v.path === CONFIG.featured;
+            var a = document.createElement('a');
+            a.href = v.path;
+            a.className = 'card' + (isFeatured ? ' featured' : '');
+
+            var tag = isFeatured ? '<span class="featured-tag">featured</span>' : '';
+
+            a.innerHTML =
+                '<div class="card-icon">' + v.icon + '</div>' +
+                '<div class="card-text">' +
+                    '<h3>' + v.name + tag + '</h3>' +
+                    '<p>' + v.desc + '</p>' +
+                '</div>' +
+                '<span class="card-arrow">&rsaquo;</span>';
+
+            grid.appendChild(a);
+        });
+    })();
+    </script>
 </body>
 </html>
