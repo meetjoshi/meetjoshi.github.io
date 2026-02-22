@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Joshi - 3D</title>
+    <meta name="description" content="Meet Joshi - I make machines smarter for a living.">
+    <meta property="og:title" content="Meet Joshi">
+    <meta property="og:description" content="I make machines smarter for a living.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="content">
+
+        <section class="section hero-section" id="hero">
+            <h1 class="hero-name">Meet Joshi</h1>
+            <p class="hero-tag">I make machines smarter for a living.</p>
+            <div class="hero-links">
+                <a href="https://github.com/meetjoshi" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://linkedin.com/in/meetjoshi" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+            <div class="scroll-hint">
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <section class="section" id="about">
+            <div class="container reveal">
+                <h2 class="sec-label">About</h2>
+                <p class="sec-body">
+                    Backend engineer turned AI builder. IIT Kharagpur alum. I like taking ideas from zero to one - payments systems, AI pipelines, things that scale. Currently building something in stealth.
+                </p>
+            </div>
+        </section>
+
+        <section class="section" id="experience">
+            <div class="container reveal">
+                <h2 class="sec-label">Experience</h2>
+                <div class="exp-list">
+                    <div class="exp-item">
+                        <div class="exp-dot"></div>
+                        <div class="exp-text">
+                            <h3>Stealth AI <span class="exp-date">2024 - Present</span></h3>
+                            <p>Building - Payments + AI</p>
+                        </div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot"></div>
+                        <div class="exp-text">
+                            <h3>Cyware <span class="exp-date">2023 - 2024</span></h3>
+                            <p>Software Engineer - Cybersecurity, AI</p>
+                        </div>
+                    </div>
+                    <div class="exp-item">
+                        <div class="exp-dot"></div>
+                        <div class="exp-text">
+                            <h3>Amazon <span class="exp-date">2022 - 2023</span></h3>
+                            <p>SDE - Advertisement Technology</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="skills">
+            <div class="container reveal">
+                <h2 class="sec-label">Skills</h2>
+                <div class="skill-cloud">
+                    <span class="skill-tag lg">Python</span>
+                    <span class="skill-tag lg">Java</span>
+                    <span class="skill-tag md">C++</span>
+                    <span class="skill-tag md">JavaScript</span>
+                    <span class="skill-tag lg">LLMs</span>
+                    <span class="skill-tag md">System Design</span>
+                    <span class="skill-tag md">API Design</span>
+                    <span class="skill-tag sm">Microservices</span>
+                    <span class="skill-tag md">ML Systems</span>
+                    <span class="skill-tag sm">Data Pipelines</span>
+                    <span class="skill-tag sm">AWS</span>
+                    <span class="skill-tag sm">Docker</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="achievements">
+            <div class="container reveal">
+                <h2 class="sec-label">Achievements</h2>
+                <div class="ach-grid">
+                    <div class="ach-card primary">
+                        <h3>#1 India</h3>
+                        <p>IEEEXtreme 13.0</p>
+                    </div>
+                    <div class="ach-card">
+                        <h3>Google Hash Code</h3>
+                        <p>2020 - Global</p>
+                    </div>
+                    <div class="ach-card">
+                        <h3>Google Kick Start</h3>
+                        <p>Global</p>
+                    </div>
+                    <div class="ach-card">
+                        <h3>Patent Holder</h3>
+                        <p>Low Code API Connector Framework</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="gallery">
+            <div class="container reveal">
+                <h2 class="sec-label">Gallery</h2>
+                <div class="photo-row">
+                    <img src="../assets/photos/aurora-back-pose.jpg" alt="Aurora" loading="lazy">
+                    <img src="../assets/photos/cappadocia-hot-air-balloons-side-pose.jpg" alt="Cappadocia" loading="lazy">
+                    <img src="../assets/photos/eiffel-tower-day-front-pose.jpg" alt="Paris" loading="lazy">
+                    <img src="../assets/photos/santorini-night-side-pose.jpg" alt="Santorini" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="contact">
+            <div class="container reveal center">
+                <h2 class="sec-label">Connect</h2>
+                <div class="contact-links">
+                    <a href="https://github.com/meetjoshi" target="_blank" rel="noopener">GitHub</a>
+                    <a href="https://linkedin.com/in/meetjoshi" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="mailto:meet.joshi.iitkgp@gmail.com">Email</a>
+                </div>
+                <p class="footer-text">Meet Joshi</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="scene.js"></script>
+</body>
+</html>
