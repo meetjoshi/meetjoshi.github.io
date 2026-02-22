@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Joshi - Mario</title>
+    <meta name="description" content="Meet Joshi - I make machines smarter for a living.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ═══ HUD ═══ -->
+    <div id="hud">
+        <div class="hud-item">
+            <span class="hud-label">MEET</span>
+            <span class="hud-val" id="hud-score">000000</span>
+        </div>
+        <div class="hud-item">
+            <span class="hud-label">COINS</span>
+            <span class="hud-val"><span class="coin-icon">&#9679;</span> x<span id="hud-coins">00</span></span>
+        </div>
+        <div class="hud-item">
+            <span class="hud-label">WORLD</span>
+            <span class="hud-val">1-1</span>
+        </div>
+        <div class="hud-item">
+            <span class="hud-label">TIME</span>
+            <span class="hud-val" id="hud-time">999</span>
+        </div>
+    </div>
+
+    <div id="game-world">
+
+        <!-- ═══ Sky decorations ═══ -->
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="hill hill-1"></div>
+        <div class="hill hill-2"></div>
+        <div class="bush bush-1"></div>
+        <div class="bush bush-2"></div>
+
+        <!-- ═══ Section 1: Intro (Question Blocks) ═══ -->
+        <section class="level-section" id="intro">
+            <div class="block-row">
+                <div class="q-block" data-content="name">
+                    <div class="block-front">?</div>
+                    <div class="block-back">
+                        <h1 class="reveal-name">MEET JOSHI</h1>
+                    </div>
+                </div>
+                <div class="brick-block"></div>
+                <div class="q-block" data-content="tagline">
+                    <div class="block-front">?</div>
+                    <div class="block-back">
+                        <p class="reveal-tag">I make machines smarter for a living.</p>
+                    </div>
+                </div>
+                <div class="brick-block"></div>
+                <div class="q-block" data-content="links">
+                    <div class="block-front">?</div>
+                    <div class="block-back">
+                        <div class="reveal-links">
+                            <a href="https://github.com/meetjoshi" target="_blank" rel="noopener">GitHub</a>
+                            <a href="https://linkedin.com/in/meetjoshi" target="_blank" rel="noopener">LinkedIn</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="hint-text">Hit the ? blocks!</p>
+        </section>
+
+        <!-- ═══ Section 2: About (Signpost) ═══ -->
+        <section class="level-section" id="about">
+            <div class="signpost">
+                <div class="sign-board">
+                    <h2>ABOUT</h2>
+                    <p>Backend engineer turned AI builder. IIT Kharagpur alum. I like taking ideas from zero to one - payments systems, AI pipelines, things that scale. Currently building something in stealth. Previously shipped at Amazon and Cyware. Always curious, always building.</p>
+                </div>
+                <div class="sign-pole"></div>
+            </div>
+            <div class="brick-deco">
+                <div class="brick-block"></div>
+                <div class="brick-block"></div>
+                <div class="brick-block"></div>
+            </div>
+        </section>
+
+        <!-- ═══ Section 3: Experience (Pipes) ═══ -->
+        <section class="level-section" id="experience">
+            <h2 class="section-title">WARP ZONES</h2>
+            <div class="pipe-row">
+                <div class="pipe" data-open="false">
+                    <div class="pipe-top">
+                        <span class="pipe-label">STEALTH AI</span>
+                    </div>
+                    <div class="pipe-body"></div>
+                    <div class="pipe-content">
+                        <h3>Building</h3>
+                        <p>Payments + AI</p>
+                        <span class="pipe-date">2024 - Present</span>
+                    </div>
+                </div>
+                <div class="pipe" data-open="false">
+                    <div class="pipe-top">
+                        <span class="pipe-label">CYWARE</span>
+                    </div>
+                    <div class="pipe-body"></div>
+                    <div class="pipe-content">
+                        <h3>Software Engineer</h3>
+                        <p>Cybersecurity, AI</p>
+                        <span class="pipe-date">2023 - 2024</span>
+                    </div>
+                </div>
+                <div class="pipe" data-open="false">
+                    <div class="pipe-top">
+                        <span class="pipe-label">AMAZON</span>
+                    </div>
+                    <div class="pipe-body"></div>
+                    <div class="pipe-content">
+                        <h3>SDE</h3>
+                        <p>Advertisement Technology</p>
+                        <span class="pipe-date">2022 - 2023</span>
+                    </div>
+                </div>
+            </div>
+            <p class="hint-text">Click a pipe to warp in!</p>
+        </section>
+
+        <!-- ═══ Section 4: Skills (Power-ups) ═══ -->
+        <section class="level-section" id="skills">
+            <h2 class="section-title">POWER-UPS</h2>
+            <div class="powerup-grid">
+                <div class="powerup fire-flower"><span class="pu-icon">&#10047;</span><span class="pu-name">Python</span></div>
+                <div class="powerup star"><span class="pu-icon">&#9733;</span><span class="pu-name">LLMs</span></div>
+                <div class="powerup mushroom"><span class="pu-icon">&#9652;</span><span class="pu-name">Java</span></div>
+                <div class="powerup fire-flower"><span class="pu-icon">&#10047;</span><span class="pu-name">C++</span></div>
+                <div class="powerup leaf"><span class="pu-icon">&#9752;</span><span class="pu-name">JavaScript</span></div>
+                <div class="powerup star"><span class="pu-icon">&#9733;</span><span class="pu-name">System Design</span></div>
+                <div class="powerup mushroom"><span class="pu-icon">&#9652;</span><span class="pu-name">API Design</span></div>
+                <div class="powerup leaf"><span class="pu-icon">&#9752;</span><span class="pu-name">Microservices</span></div>
+                <div class="powerup star"><span class="pu-icon">&#9733;</span><span class="pu-name">ML Systems</span></div>
+                <div class="powerup mushroom"><span class="pu-icon">&#9652;</span><span class="pu-name">AWS</span></div>
+                <div class="powerup leaf"><span class="pu-icon">&#9752;</span><span class="pu-name">Docker</span></div>
+            </div>
+        </section>
+
+        <!-- ═══ Section 5: Achievements (Coins) ═══ -->
+        <section class="level-section" id="achievements">
+            <h2 class="section-title">COIN COLLECTION</h2>
+            <div class="coin-row">
+                <div class="coin-block gold" data-coins="10">
+                    <div class="spinning-coin"></div>
+                    <h3>#1 India</h3>
+                    <p>IEEEXtreme 13.0</p>
+                </div>
+                <div class="coin-block silver" data-coins="5">
+                    <div class="spinning-coin"></div>
+                    <h3>Hash Code 2020</h3>
+                    <p>Google - Global</p>
+                </div>
+                <div class="coin-block silver" data-coins="5">
+                    <div class="spinning-coin"></div>
+                    <h3>Kick Start</h3>
+                    <p>Google - Global</p>
+                </div>
+                <div class="coin-block bronze" data-coins="3">
+                    <div class="spinning-coin"></div>
+                    <h3>SnackDown 2019</h3>
+                    <p>CodeChef - Global</p>
+                </div>
+            </div>
+            <div class="patent-pipe">
+                <div class="pipe-top"><span class="pipe-label">PATENT</span></div>
+                <div class="pipe-body"></div>
+                <p class="patent-text">Low Code API Connector Framework with Dependency Management</p>
+            </div>
+        </section>
+
+        <!-- ═══ Section 6: Gallery (World Map) ═══ -->
+        <section class="level-section" id="gallery">
+            <h2 class="section-title">WORLD MAP</h2>
+            <div class="world-map-grid">
+                <div class="map-frame">
+                    <img src="../assets/photos/aurora-back-pose.jpg" alt="Aurora" loading="lazy">
+                    <span>WORLD 1 - AURORA</span>
+                </div>
+                <div class="map-frame">
+                    <img src="../assets/photos/cappadocia-hot-air-balloons-side-pose.jpg" alt="Cappadocia" loading="lazy">
+                    <span>WORLD 2 - CAPPADOCIA</span>
+                </div>
+                <div class="map-frame">
+                    <img src="../assets/photos/eiffel-tower-day-front-pose.jpg" alt="Paris" loading="lazy">
+                    <span>WORLD 3 - PARIS</span>
+                </div>
+                <div class="map-frame">
+                    <img src="../assets/photos/santorini-night-side-pose.jpg" alt="Santorini" loading="lazy">
+                    <span>WORLD 4 - SANTORINI</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Section 7: Castle (Contact) ═══ -->
+        <section class="level-section" id="castle">
+            <div class="castle">
+                <div class="flag-pole">
+                    <div class="flag"></div>
+                </div>
+                <div class="castle-body">
+                    <div class="castle-top">
+                        <div class="merlon"></div>
+                        <div class="merlon"></div>
+                        <div class="merlon"></div>
+                        <div class="merlon"></div>
+                        <div class="merlon"></div>
+                    </div>
+                    <div class="castle-face">
+                        <div class="castle-window"></div>
+                        <div class="castle-door"></div>
+                        <div class="castle-window"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="castle-text">
+                <h2>THANK YOU MEET!</h2>
+                <p>BUT YOUR NEXT PROJECT IS IN ANOTHER CASTLE!</p>
+                <div class="castle-links">
+                    <a href="https://github.com/meetjoshi" target="_blank" rel="noopener">GITHUB</a>
+                    <a href="https://linkedin.com/in/meetjoshi" target="_blank" rel="noopener">LINKEDIN</a>
+                    <a href="mailto:meet.joshi.iitkgp@gmail.com">EMAIL</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Ground ═══ -->
+        <div class="ground">
+            <div class="ground-top"></div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
