@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEET JOSHI - Player Profile</title>
+    <meta name="description" content="Meet Joshi - I make machines smarter for a living.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="scanlines"></div>
+    <div id="crt-flicker"></div>
+
+    <!-- ═══ Title Screen ═══ -->
+    <div id="title-screen">
+        <div class="title-content">
+            <p class="title-pre">- WELCOME TO -</p>
+            <h1 class="title-name">MEET<br>JOSHI</h1>
+            <p class="title-sub">I MAKE MACHINES SMARTER FOR A LIVING</p>
+            <p class="title-start blink">[ PRESS START ]</p>
+            <p class="title-hint">or just scroll down</p>
+        </div>
+    </div>
+
+    <!-- ═══ Main Game Screen ═══ -->
+    <main id="game-screen">
+
+        <!-- ── Player Stats ── -->
+        <section class="panel" id="stats">
+            <div class="panel-header">
+                <span class="panel-icon">&#9733;</span>
+                <h2>PLAYER STATS</h2>
+            </div>
+            <div class="panel-body">
+                <div class="stat-card">
+                    <div class="stat-row">
+                        <span class="stat-label">NAME</span>
+                        <span class="stat-value">MEET JOSHI</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">CLASS</span>
+                        <span class="stat-value">AI ENGINEER</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">ORIGIN</span>
+                        <span class="stat-value">IIT KHARAGPUR</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">STATUS</span>
+                        <span class="stat-value status-active">BUILDING</span>
+                    </div>
+                </div>
+                <div class="stat-bars">
+                    <div class="bar-row">
+                        <span class="bar-label">BACKEND</span>
+                        <div class="pixel-bar"><div class="pixel-bar-fill" data-pct="95"></div></div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">AI / ML</span>
+                        <div class="pixel-bar"><div class="pixel-bar-fill" data-pct="90"></div></div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">SYSTEM DESIGN</span>
+                        <div class="pixel-bar"><div class="pixel-bar-fill" data-pct="88"></div></div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">INFRA</span>
+                        <div class="pixel-bar"><div class="pixel-bar-fill" data-pct="85"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Quest Log ── -->
+        <section class="panel" id="quests">
+            <div class="panel-header">
+                <span class="panel-icon">&#9776;</span>
+                <h2>QUEST LOG</h2>
+            </div>
+            <div class="panel-body">
+                <div class="quest completed">
+                    <div class="quest-status">[ACTIVE]</div>
+                    <div class="quest-info">
+                        <h3>STEALTH AI</h3>
+                        <p>Building - Payments + AI</p>
+                        <span class="quest-date">APR 2024 - PRESENT</span>
+                    </div>
+                    <div class="quest-xp">CURRENT</div>
+                </div>
+                <div class="quest completed">
+                    <div class="quest-status">[DONE]</div>
+                    <div class="quest-info">
+                        <h3>CYWARE</h3>
+                        <p>Software Engineer - Cybersecurity, AI</p>
+                        <span class="quest-date">JUN 2023 - MAR 2024</span>
+                    </div>
+                    <div class="quest-xp">+800 XP</div>
+                </div>
+                <div class="quest completed">
+                    <div class="quest-status">[DONE]</div>
+                    <div class="quest-info">
+                        <h3>AMAZON</h3>
+                        <p>SDE - Advertisement Technology</p>
+                        <span class="quest-date">JUN 2022 - MAY 2023</span>
+                    </div>
+                    <div class="quest-xp">+1200 XP</div>
+                </div>
+                <div class="quest completed">
+                    <div class="quest-status">[DONE]</div>
+                    <div class="quest-info">
+                        <h3>IIT KHARAGPUR</h3>
+                        <p>B.Tech. - The tutorial level</p>
+                        <span class="quest-date">2018 - 2022</span>
+                    </div>
+                    <div class="quest-xp">+2000 XP</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Inventory (Skills) ── -->
+        <section class="panel" id="inventory">
+            <div class="panel-header">
+                <span class="panel-icon">&#9881;</span>
+                <h2>INVENTORY</h2>
+            </div>
+            <div class="panel-body">
+                <div class="inv-grid">
+                    <div class="inv-slot legendary" data-tip="Primary weapon">
+                        <span class="inv-icon">Py</span>
+                        <span class="inv-name">PYTHON</span>
+                    </div>
+                    <div class="inv-slot epic" data-tip="Heavy DPS">
+                        <span class="inv-icon">Jv</span>
+                        <span class="inv-name">JAVA</span>
+                    </div>
+                    <div class="inv-slot epic" data-tip="Classic blade">
+                        <span class="inv-icon">C+</span>
+                        <span class="inv-name">C++</span>
+                    </div>
+                    <div class="inv-slot rare" data-tip="Utility spell">
+                        <span class="inv-icon">JS</span>
+                        <span class="inv-name">JAVASCRIPT</span>
+                    </div>
+                    <div class="inv-slot legendary" data-tip="Summoning magic">
+                        <span class="inv-icon">AI</span>
+                        <span class="inv-name">LLMs</span>
+                    </div>
+                    <div class="inv-slot epic" data-tip="Crafting tool">
+                        <span class="inv-icon">AP</span>
+                        <span class="inv-name">API DESIGN</span>
+                    </div>
+                    <div class="inv-slot rare" data-tip="Architecture">
+                        <span class="inv-icon">MS</span>
+                        <span class="inv-name">MICROSERVICES</span>
+                    </div>
+                    <div class="inv-slot rare" data-tip="Cloud armor">
+                        <span class="inv-icon">AW</span>
+                        <span class="inv-name">AWS</span>
+                    </div>
+                    <div class="inv-slot common" data-tip="Container mount">
+                        <span class="inv-icon">Dk</span>
+                        <span class="inv-name">DOCKER</span>
+                    </div>
+                </div>
+                <div class="inv-legend">
+                    <span class="legend-item legendary">&#9670; LEGENDARY</span>
+                    <span class="legend-item epic">&#9670; EPIC</span>
+                    <span class="legend-item rare">&#9670; RARE</span>
+                    <span class="legend-item common">&#9670; COMMON</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Achievements ── -->
+        <section class="panel" id="achievements">
+            <div class="panel-header">
+                <span class="panel-icon">&#9813;</span>
+                <h2>ACHIEVEMENTS</h2>
+            </div>
+            <div class="panel-body">
+                <div class="trophy-grid">
+                    <div class="trophy gold">
+                        <div class="trophy-icon">&#9733;</div>
+                        <h3>#1 INDIA</h3>
+                        <p>IEEEXtreme 13.0</p>
+                        <span class="trophy-rarity">LEGENDARY</span>
+                    </div>
+                    <div class="trophy silver">
+                        <div class="trophy-icon">&#9733;</div>
+                        <h3>HASH CODE 2020</h3>
+                        <p>Google - Global</p>
+                        <span class="trophy-rarity">EPIC</span>
+                    </div>
+                    <div class="trophy silver">
+                        <div class="trophy-icon">&#9733;</div>
+                        <h3>KICK START</h3>
+                        <p>Google - Global</p>
+                        <span class="trophy-rarity">EPIC</span>
+                    </div>
+                    <div class="trophy bronze">
+                        <div class="trophy-icon">&#9733;</div>
+                        <h3>SNACKDOWN 2019</h3>
+                        <p>CodeChef - Global</p>
+                        <span class="trophy-rarity">RARE</span>
+                    </div>
+                </div>
+                <div class="special-unlock">
+                    <span class="unlock-badge">!</span>
+                    <div>
+                        <h3>PATENT UNLOCKED</h3>
+                        <p>Low Code API Connector Framework with Dependency Management</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── World Map (Gallery) ── -->
+        <section class="panel" id="world-map">
+            <div class="panel-header">
+                <span class="panel-icon">&#9775;</span>
+                <h2>WORLD MAP</h2>
+            </div>
+            <div class="panel-body">
+                <p class="map-intro">LOCATIONS DISCOVERED: 4/???</p>
+                <div class="map-grid">
+                    <div class="map-tile">
+                        <img src="../assets/photos/aurora-back-pose.jpg" alt="Aurora" loading="lazy">
+                        <span class="map-label">AURORA</span>
+                    </div>
+                    <div class="map-tile">
+                        <img src="../assets/photos/cappadocia-hot-air-balloons-side-pose.jpg" alt="Cappadocia" loading="lazy">
+                        <span class="map-label">CAPPADOCIA</span>
+                    </div>
+                    <div class="map-tile">
+                        <img src="../assets/photos/eiffel-tower-day-front-pose.jpg" alt="Paris" loading="lazy">
+                        <span class="map-label">PARIS</span>
+                    </div>
+                    <div class="map-tile">
+                        <img src="../assets/photos/santorini-night-side-pose.jpg" alt="Santorini" loading="lazy">
+                        <span class="map-label">SANTORINI</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Continue? ── -->
+        <section class="panel" id="continue">
+            <div class="panel-header">
+                <span class="panel-icon">&#9654;</span>
+                <h2>CONTINUE?</h2>
+            </div>
+            <div class="panel-body continue-body">
+                <p class="continue-text">SAVE POINT REACHED. CONNECT TO CONTINUE.</p>
+                <div class="continue-links">
+                    <a href="https://github.com/meetjoshi" target="_blank" rel="noopener">&gt; GITHUB</a>
+                    <a href="https://linkedin.com/in/meetjoshi" target="_blank" rel="noopener">&gt; LINKEDIN</a>
+                    <a href="mailto:meet.joshi.iitkgp@gmail.com">&gt; EMAIL</a>
+                </div>
+                <p class="continue-footer">MEET JOSHI &copy; 2026 - ALL RIGHTS RESERVED</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
