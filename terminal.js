@@ -141,7 +141,7 @@
   Backend engineer turned AI builder.
   IIT Kharagpur alum.
 
-  I like taking ideas from <span class="white bold">zero to one</span> —
+  I like taking ideas from <span class="white bold">zero to one</span> -
   payments systems, AI pipelines, things
   that scale.
 
@@ -160,15 +160,15 @@
 `<span class="accent bold">  Experience</span>
 <span class="dim">  ─────────────────────────────────────</span>
 
-  <span class="white bold">▸ Stealth AI</span>                   <span class="dim">Apr 2024 — Present</span>
+  <span class="white bold">▸ Stealth AI</span>                   <span class="dim">Apr 2024 - Present</span>
     Building
     <span class="accent">Payments + AI</span>
 
-  <span class="white bold">▸ Cyware</span>                      <span class="dim">Jun 2023 — Mar 2024</span>
+  <span class="white bold">▸ Cyware</span>                      <span class="dim">Jun 2023 - Mar 2024</span>
     Software Engineer
     <span class="accent">Cybersecurity, AI</span>
 
-  <span class="white bold">▸ Amazon</span>                      <span class="dim">Jun 2022 — May 2023</span>
+  <span class="white bold">▸ Amazon</span>                      <span class="dim">Jun 2022 - May 2023</span>
     SDE
     <span class="accent">Advertisement Technology</span>`);
     };
@@ -220,7 +220,7 @@
 <span class="dim">  ─────────────────────────────────────</span>
 
   <span class="accent">★</span> <span class="white bold">IEEEXtreme 13.0</span>
-    <span class="accent">India Rank #1</span> — Global competition
+    <span class="accent">India Rank #1</span> - Global competition
 
   <span class="accent">★</span> <span class="white bold">Google Hash Code 2020</span>
     Global qualifier
@@ -355,10 +355,10 @@
     const photos = [
         { file: 'aurora-back-pose.jpg',                       caption: 'Aurora' },
         { file: 'aurora-side-pose.jpg',                       caption: 'Aurora' },
-        { file: 'aurora-side-pose-ghibli.jpg',                caption: 'Aurora — Ghibli Edit' },
+        { file: 'aurora-side-pose-ghibli.jpg',                caption: 'Aurora - Ghibli Edit' },
         { file: 'cappadocia-hot-air-balloons-side-pose.jpg',  caption: 'Cappadocia' },
-        { file: 'eiffel-tower-day-front-pose.jpg',            caption: 'Paris — Eiffel Tower' },
-        { file: 'eiffel-tower-day-side-pose.jpg',             caption: 'Paris — Eiffel Tower' },
+        { file: 'eiffel-tower-day-front-pose.jpg',            caption: 'Paris - Eiffel Tower' },
+        { file: 'eiffel-tower-day-side-pose.jpg',             caption: 'Paris - Eiffel Tower' },
         { file: 'santorini-night-side-pose.jpg',              caption: 'Santorini' },
         { file: 'public-speaking.jpg',                        caption: 'Public Speaking' },
     ];
