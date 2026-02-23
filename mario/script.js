@@ -15,17 +15,107 @@
     resize();
     window.addEventListener('resize', resize);
 
+    // ── Audio ──────────────────────────────────────
+    var audioCtx;
+    function getAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        return audioCtx;
+    }
+
+    function playTone(freq, freq2, dur, type, vol) {
+        try {
+            var c = getAudio();
+            var o = c.createOscillator();
+            var g = c.createGain();
+            o.type = type || 'square';
+            o.frequency.setValueAtTime(freq, c.currentTime);
+            if (freq2) o.frequency.linearRampToValueAtTime(freq2, c.currentTime + dur);
+            g.gain.setValueAtTime(vol || 0.1, c.currentTime);
+            g.gain.linearRampToValueAtTime(0, c.currentTime + dur);
+            o.connect(g);
+            g.connect(c.destination);
+            o.start();
+            o.stop(c.currentTime + dur);
+        } catch (e) {}
+    }
+
+    function sfxJump() { playTone(330, 660, 0.12, 'square', 0.08); }
+    function sfxBump() { playTone(260, 180, 0.08, 'square', 0.08); }
+    function sfxPipe() { playTone(500, 200, 0.18, 'square', 0.06); }
+
+    function sfxCoin() {
+        try {
+            var c = getAudio();
+            var o = c.createOscillator();
+            var g = c.createGain();
+            o.type = 'square';
+            o.frequency.setValueAtTime(988, c.currentTime);
+            o.frequency.setValueAtTime(1319, c.currentTime + 0.06);
+            g.gain.setValueAtTime(0.08, c.currentTime);
+            g.gain.linearRampToValueAtTime(0, c.currentTime + 0.14);
+            o.connect(g);
+            g.connect(c.destination);
+            o.start();
+            o.stop(c.currentTime + 0.14);
+        } catch (e) {}
+    }
+
+    function sfxStart() {
+        try {
+            var c = getAudio();
+            var notes = [523, 659, 784, 1047];
+            for (var i = 0; i < notes.length; i++) {
+                (function (n, t) {
+                    var o = c.createOscillator();
+                    var g = c.createGain();
+                    o.type = 'square';
+                    o.frequency.setValueAtTime(n, c.currentTime + t);
+                    g.gain.setValueAtTime(0.08, c.currentTime + t);
+                    g.gain.linearRampToValueAtTime(0, c.currentTime + t + 0.1);
+                    o.connect(g);
+                    g.connect(c.destination);
+                    o.start(c.currentTime + t);
+                    o.stop(c.currentTime + t + 0.1);
+                })(notes[i], i * 0.08);
+            }
+        } catch (e) {}
+    }
+
+    function sfxFlagpole() {
+        try {
+            var c = getAudio();
+            var freqs = [784, 988, 1175, 1319, 1568];
+            for (var i = 0; i < freqs.length; i++) {
+                (function (f, t) {
+                    var o = c.createOscillator();
+                    var g = c.createGain();
+                    o.type = 'square';
+                    o.frequency.setValueAtTime(f, c.currentTime + t);
+                    g.gain.setValueAtTime(0.08, c.currentTime + t);
+                    g.gain.linearRampToValueAtTime(0, c.currentTime + t + 0.12);
+                    o.connect(g);
+                    g.connect(c.destination);
+                    o.start(c.currentTime + t);
+                    o.stop(c.currentTime + t + 0.12);
+                })(freqs[i], i * 0.06);
+            }
+        } catch (e) {}
+    }
+
     // ── Game State ──────────────────────────────────
     var started = false;
     var coins = 0;
     var score = 0;
     var timeLeft = 999;
     var camX = 0;
+    var castleReached = false;
 
     var TILE = 32;
     var GRAVITY = 0.6;
     var JUMP_FORCE = -10;
-    var MOVE_SPEED = 3.5;
+    var MAX_SPEED = 4;
+    var ACCEL = 0.4;
+    var FRICTION = 0.25;
     var LEVEL_W = 130;
     var LEVEL_H = 14;
     var GROUND_Y = LEVEL_H - 2;
@@ -65,7 +155,6 @@
     });
     window.addEventListener('keyup', function (e) { keys[e.key] = false; });
 
-    // Touch controls
     function bindTouch(id, key) {
         var el = document.getElementById(id);
         el.addEventListener('touchstart', function (e) { e.preventDefault(); keys[key] = true; if (!started) startGame(); });
@@ -90,11 +179,28 @@
         frame: 0, frameTimer: 0
     };
 
+    // ── Particles ─────────────────────────────────
+    var particles = [];
+
+    function spawnCoinPop(x, y) {
+        particles.push({ x: x, y: y, vy: -3, life: 30, maxLife: 30, type: 'coin' });
+    }
+
+    function spawnScoreText(x, y, text) {
+        particles.push({ x: x, y: y, vy: -1.5, life: 40, maxLife: 40, type: 'score', text: text });
+    }
+
     // ── Level Data ──────────────────────────────────
-    // Tile types: 0=air, 1=ground, 2=brick, 3=qblock, 4=pipe_tl, 5=pipe_tr, 6=pipe_bl, 7=pipe_br, 8=castle, 9=coin, 10=hit_block
     var level = [];
+    var pipes = [];
+    var FLAGPOLE_X = 120;
+    var flagY = 0;
+    var flagTriggered = false;
+    var bumps = [];
+
     function initLevel() {
         level = [];
+        pipes = [];
         for (var y = 0; y < LEVEL_H; y++) {
             level[y] = [];
             for (var x = 0; x < LEVEL_W; x++) {
@@ -103,52 +209,60 @@
             }
         }
 
+        // Ground gaps
+        for (var gy = GROUND_Y; gy < LEVEL_H; gy++) {
+            level[gy][45] = 0;
+            level[gy][46] = 0;
+            level[gy][79] = 0;
+            level[gy][80] = 0;
+        }
+
         // Question blocks and bricks (intro area)
-        setTile(10, 8, 3); // Q block - name
-        setTile(11, 8, 2); // brick
-        setTile(12, 8, 3); // Q block - tagline
-        setTile(13, 8, 2); // brick
-        setTile(14, 8, 3); // Q block - links
+        setTile(10, 8, 3);
+        setTile(11, 8, 2);
+        setTile(12, 8, 3);
+        setTile(13, 8, 2);
+        setTile(14, 8, 3);
 
         // Floating coins
         placeCoin(18, 9);
         placeCoin(19, 9);
         placeCoin(20, 9);
 
-        // About signpost area - blocks
-        setTile(25, 8, 3); // Q block - about
+        // About blocks
+        setTile(25, 8, 3);
         setTile(26, 8, 2);
-        setTile(27, 8, 3); // Q block - about 2
+        setTile(27, 8, 3);
 
-        // Elevated platform
-        for (var i = 32; i <= 37; i++) setTile(i, 9, 2);
+        // Elevated platform (row 10 - was row 9, now reachable)
+        for (var i = 32; i <= 37; i++) setTile(i, 10, 2);
 
-        // Coins above platform
-        placeCoin(33, 7);
-        placeCoin(34, 7);
-        placeCoin(35, 7);
-        placeCoin(36, 7);
+        // Coins above platform (row 8 - was row 7)
+        placeCoin(33, 8);
+        placeCoin(34, 8);
+        placeCoin(35, 8);
+        placeCoin(36, 8);
 
-        // Pipes (Experience) - each is 2x2
+        // Pipes (Experience)
         placePipe(42, 'stealth');
         placePipe(50, 'cyware');
         placePipe(58, 'amazon');
 
-        // Skills blocks
-        setTile(65, 8, 3); // Q block - skills
-        setTile(67, 6, 3); // Q block - skills2
-        setTile(69, 8, 3); // Q block - skills3
+        // Skills blocks (all at row 8 - skills2 was row 6)
+        setTile(65, 8, 3);
+        setTile(67, 8, 3);
+        setTile(69, 8, 3);
 
-        // More coins
+        // Coin arc
         placeCoin(72, 9);
         placeCoin(73, 8);
         placeCoin(74, 7);
         placeCoin(75, 8);
         placeCoin(76, 9);
 
-        // Achievement blocks
-        setTile(82, 8, 3); // Q block - achievements
-        setTile(85, 6, 3); // Q block - achievements2
+        // Achievement blocks (all at row 8 - achievements2 was row 6)
+        setTile(82, 8, 3);
+        setTile(85, 8, 3);
 
         // Staircase
         for (var s = 0; s < 5; s++) {
@@ -164,7 +278,7 @@
         placeCoin(93, GROUND_Y - 6);
 
         // Gallery blocks
-        setTile(100, 8, 3); // Q block - gallery
+        setTile(100, 8, 3);
 
         // Pipe to education
         placePipe(106, 'education');
@@ -189,7 +303,6 @@
 
     function placeCoin(x, y) { setTile(x, y, 9); }
 
-    var pipes = [];
     function placePipe(x, id) {
         setTile(x, GROUND_Y - 2, 4);
         setTile(x + 1, GROUND_Y - 2, 5);
@@ -205,6 +318,7 @@
 
     function assignQBlocks() {
         qblockIdx = 0;
+        qblockContents = {};
         for (var y = 0; y < LEVEL_H; y++) {
             for (var x = 0; x < LEVEL_W; x++) {
                 if (level[y][x] === 3) {
@@ -215,9 +329,6 @@
             }
         }
     }
-
-    // Bump animations
-    var bumps = [];
 
     // ── Info Content ────────────────────────────────
     var infoData = {
@@ -276,7 +387,13 @@
         coins = 0;
         score = 0;
         timeLeft = 999;
+        castleReached = false;
+        flagTriggered = false;
+        flagY = 0;
+        particles = [];
+        bumps = [];
         updateHUD();
+        sfxStart();
 
         setInterval(function () {
             if (timeLeft > 0) { timeLeft--; updateHUD(); }
@@ -308,10 +425,14 @@
             coins++;
             score += 200;
             updateHUD();
+            sfxCoin();
+            spawnCoinPop(tx * TILE + TILE / 2, ty * TILE - 8);
+            spawnScoreText(tx * TILE + TILE / 2, ty * TILE - 20, '+200');
             var contentId = qblockContents[key];
             if (contentId) showInfo(contentId);
         } else if (t === 2) {
             bumps.push({ x: tx, y: ty, timer: 8, origY: ty * TILE });
+            sfxBump();
         }
     }
 
@@ -319,16 +440,35 @@
     function update() {
         if (!started) return;
 
-        // Movement
-        var moving = false;
-        if (keys['ArrowLeft']) { player.vx = -MOVE_SPEED; player.facing = -1; moving = true; }
-        else if (keys['ArrowRight']) { player.vx = MOVE_SPEED; player.facing = 1; moving = true; }
-        else { player.vx = 0; }
+        // Smooth acceleration
+        if (keys['ArrowLeft']) {
+            player.vx -= ACCEL;
+            if (player.vx < -MAX_SPEED) player.vx = -MAX_SPEED;
+            player.facing = -1;
+        } else if (keys['ArrowRight']) {
+            player.vx += ACCEL;
+            if (player.vx > MAX_SPEED) player.vx = MAX_SPEED;
+            player.facing = 1;
+        } else {
+            if (player.vx > 0) {
+                player.vx -= FRICTION;
+                if (player.vx < 0) player.vx = 0;
+            } else if (player.vx < 0) {
+                player.vx += FRICTION;
+                if (player.vx > 0) player.vx = 0;
+            }
+        }
 
         // Jump
         if ((keys[' '] || keys['ArrowUp']) && player.onGround) {
             player.vy = JUMP_FORCE;
             player.onGround = false;
+            sfxJump();
+        }
+
+        // Variable jump height - release key to cut jump short
+        if (!keys[' '] && !keys['ArrowUp'] && player.vy < -3) {
+            player.vy *= 0.5;
         }
 
         // Gravity
@@ -341,6 +481,8 @@
         if (newX > (LEVEL_W * TILE - player.w)) newX = LEVEL_W * TILE - player.w;
         if (!collidesAt(newX, player.y, player.w, player.h)) {
             player.x = newX;
+        } else {
+            player.vx = 0;
         }
 
         // Vertical movement
@@ -354,7 +496,6 @@
                 player.onGround = true;
             } else if (player.vy < 0) {
                 player.y = Math.floor(newY / TILE) * TILE + TILE;
-                // Hit block above
                 var headTX = Math.floor((player.x + player.w / 2) / TILE);
                 var headTY = Math.floor((player.y - 1) / TILE);
                 hitBlock(headTX, headTY);
@@ -367,11 +508,14 @@
         var pty = Math.floor((player.y + player.h / 2) / TILE);
         for (var dy = -1; dy <= 1; dy++) {
             for (var dx = -1; dx <= 1; dx++) {
-                if (getTile(ptx + dx, pty + dy) === 9) {
-                    setTile(ptx + dx, pty + dy, 0);
+                var cx = ptx + dx, cy = pty + dy;
+                if (getTile(cx, cy) === 9) {
+                    setTile(cx, cy, 0);
                     coins++;
                     score += 100;
                     updateHUD();
+                    sfxCoin();
+                    spawnScoreText(cx * TILE + TILE / 2, cy * TILE, '+100');
                 }
             }
         }
@@ -384,6 +528,7 @@
                 var py = p.y * TILE;
                 if (player.x + player.w > px && player.x < px + 2 * TILE &&
                     player.y + player.h >= py && player.y + player.h <= py + TILE + 4) {
+                    sfxPipe();
                     showInfo(p.id);
                     keys['ArrowDown'] = false;
                     break;
@@ -391,19 +536,36 @@
             }
         }
 
-        // Castle interaction
-        if (getTile(ptx, pty) === 8 || getTile(ptx + 1, pty) === 8) {
-            var castleKey = '__castle_shown';
-            if (!window[castleKey]) {
-                window[castleKey] = true;
-                showInfo('castle');
-            }
-        } else {
-            window['__castle_shown'] = false;
+        // Flagpole
+        if (!flagTriggered && player.x + player.w >= FLAGPOLE_X * TILE && player.x < (FLAGPOLE_X + 1) * TILE) {
+            flagTriggered = true;
+            flagY = 0;
+            sfxFlagpole();
+            score += 5000;
+            updateHUD();
+            spawnScoreText(FLAGPOLE_X * TILE + TILE / 2, (GROUND_Y - 6) * TILE, '+5000');
+        }
+        if (flagTriggered && flagY < 1) {
+            flagY += 0.025;
+            if (flagY > 1) flagY = 1;
+        }
+
+        // Castle interaction (proximity-based, not tile overlap)
+        if (player.x + player.w >= 122 * TILE && !castleReached) {
+            castleReached = true;
+            showInfo('castle');
+        }
+
+        // Respawn on fall into gap
+        if (player.y > LEVEL_H * TILE + 64) {
+            player.x = 3 * TILE;
+            player.y = (GROUND_Y - 2) * TILE;
+            player.vx = 0;
+            player.vy = 0;
         }
 
         // Animation frame
-        if (moving && player.onGround) {
+        if (Math.abs(player.vx) > 0.5 && player.onGround) {
             player.frameTimer++;
             if (player.frameTimer > 6) { player.frameTimer = 0; player.frame = (player.frame + 1) % 3; }
         } else if (!player.onGround) {
@@ -419,6 +581,13 @@
             if (bumps[b].timer <= 0) bumps.splice(b, 1);
         }
 
+        // Particles
+        for (var i = particles.length - 1; i >= 0; i--) {
+            particles[i].y += particles[i].vy;
+            particles[i].life--;
+            if (particles[i].life <= 0) particles.splice(i, 1);
+        }
+
         // Camera
         camX = player.x - GAME_W / 2 + player.w / 2;
         if (camX < 0) camX = 0;
@@ -429,7 +598,6 @@
     function render() {
         ctx.save();
 
-        // Scale to fit screen
         var ox = (W - GAME_W * scale) / 2;
         var oy = (H - GAME_H * scale) / 2;
         ctx.fillStyle = '#000';
@@ -441,7 +609,7 @@
         ctx.fillStyle = C.sky;
         ctx.fillRect(0, 0, GAME_W, GAME_H);
 
-        // Clouds (parallax)
+        // Clouds
         drawCloud(100 - camX * 0.3, 50, 60);
         drawCloud(400 - camX * 0.3, 30, 80);
         drawCloud(700 - camX * 0.3, 60, 50);
@@ -449,11 +617,19 @@
         drawCloud(1500 - camX * 0.3, 55, 60);
         drawCloud(2200 - camX * 0.3, 35, 75);
 
-        // Hills (parallax)
+        // Hills
         drawHill(150 - camX * 0.5, GROUND_Y * TILE, 120, 60);
         drawHill(600 - camX * 0.5, GROUND_Y * TILE, 80, 40);
         drawHill(1100 - camX * 0.5, GROUND_Y * TILE, 100, 50);
         drawHill(1800 - camX * 0.5, GROUND_Y * TILE, 130, 65);
+
+        // Bushes
+        drawBush(250 - camX * 0.5, GROUND_Y * TILE, 40, 14);
+        drawBush(550 - camX * 0.5, GROUND_Y * TILE, 30, 10);
+        drawBush(950 - camX * 0.5, GROUND_Y * TILE, 45, 15);
+        drawBush(1300 - camX * 0.5, GROUND_Y * TILE, 35, 12);
+        drawBush(1700 - camX * 0.5, GROUND_Y * TILE, 40, 14);
+        drawBush(2100 - camX * 0.5, GROUND_Y * TILE, 32, 11);
 
         ctx.save();
         ctx.translate(-camX, 0);
@@ -467,7 +643,6 @@
                 var dx = tx * TILE;
                 var dy = ty * TILE;
 
-                // Bump offset
                 var bumpOff = 0;
                 for (var b = 0; b < bumps.length; b++) {
                     if (bumps[b].x === tx && bumps[b].y === ty) {
@@ -488,6 +663,12 @@
             }
         }
 
+        // Castle decorations (on top of castle tiles)
+        drawCastleDecor();
+
+        // Flagpole
+        drawFlagpole();
+
         // Pipe labels
         for (var i = 0; i < pipes.length; i++) {
             var p = pipes[i];
@@ -500,14 +681,33 @@
         // Player
         drawPlayer(player.x, player.y, player.facing, player.frame, player.onGround);
 
+        // Particles
+        for (var i = 0; i < particles.length; i++) {
+            var p = particles[i];
+            var alpha = p.life / p.maxLife;
+            ctx.globalAlpha = alpha;
+            if (p.type === 'coin') {
+                ctx.fillStyle = C.coinGold;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (p.type === 'score') {
+                ctx.fillStyle = '#fff';
+                ctx.font = '7px "Press Start 2P"';
+                ctx.textAlign = 'center';
+                ctx.fillText(p.text, p.x, p.y);
+            }
+            ctx.globalAlpha = 1;
+        }
+
         ctx.restore();
 
-        // Instructions at top (brief)
+        // Instructions
         if (started && timeLeft > 990) {
             ctx.fillStyle = 'rgba(255,255,255,0.6)';
             ctx.font = '7px "Press Start 2P"';
             ctx.textAlign = 'center';
-            ctx.fillText('JUMP INTO ? BLOCKS / DOWN ON PIPES', GAME_W / 2, GAME_H - 20);
+            ctx.fillText('ARROW KEYS + SPACE TO JUMP / DOWN ON PIPES', GAME_W / 2, GAME_H - 20);
         }
 
         ctx.restore();
@@ -603,6 +803,59 @@
         ctx.fillStyle = C.castleDark;
         ctx.fillRect(x, y, TILE, 2);
         ctx.fillRect(x, y, 2, TILE);
+        ctx.fillRect(x + TILE - 2, y, 2, TILE);
+    }
+
+    function drawCastleDecor() {
+        var cx = 122 * TILE;
+        var topY = (GROUND_Y - 5) * TILE;
+
+        // Crenellations on top edge
+        ctx.fillStyle = C.castleGray;
+        for (var i = 0; i < 7; i++) {
+            if (i % 2 === 0) {
+                ctx.fillRect(cx + i * TILE + 6, topY - 8, TILE - 12, 8);
+            }
+        }
+
+        // Door
+        var doorX = cx + 3 * TILE - 8;
+        var doorY = (GROUND_Y - 2) * TILE;
+        ctx.fillStyle = '#333';
+        ctx.fillRect(doorX, doorY, 16, 2 * TILE);
+        ctx.beginPath();
+        ctx.arc(doorX + 8, doorY, 8, Math.PI, 0);
+        ctx.fill();
+
+        // Windows
+        ctx.fillStyle = '#333';
+        var winY = (GROUND_Y - 4) * TILE + 8;
+        ctx.fillRect(cx + TILE + 8, winY, 12, 12);
+        ctx.fillRect(cx + 5 * TILE + 8, winY, 12, 12);
+    }
+
+    function drawFlagpole() {
+        var x = FLAGPOLE_X * TILE + TILE / 2;
+        var groundPx = GROUND_Y * TILE;
+        var poleTop = (GROUND_Y - 8) * TILE;
+        var poleH = groundPx - poleTop;
+
+        ctx.fillStyle = '#555';
+        ctx.fillRect(x - 1, poleTop, 3, poleH);
+
+        ctx.fillStyle = '#ffd700';
+        ctx.beginPath();
+        ctx.arc(x, poleTop, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        var fy = poleTop + 6 + flagY * (poleH - TILE - 6);
+        ctx.fillStyle = '#39ff14';
+        ctx.beginPath();
+        ctx.moveTo(x, fy);
+        ctx.lineTo(x - 18, fy + 8);
+        ctx.lineTo(x, fy + 16);
+        ctx.closePath();
+        ctx.fill();
     }
 
     function drawCoinTile(x, y) {
@@ -647,38 +900,42 @@
         ctx.fill();
     }
 
+    function drawBush(x, baseY, w, h) {
+        ctx.fillStyle = '#3a7c1a';
+        ctx.beginPath();
+        ctx.ellipse(x, baseY, w / 2, h, 0, Math.PI, 0);
+        ctx.fill();
+        ctx.fillStyle = '#4a9c2a';
+        ctx.beginPath();
+        ctx.ellipse(x, baseY, w / 2 - 2, h - 2, 0, Math.PI, 0);
+        ctx.fill();
+    }
+
     function drawPlayer(x, y, facing, frame, onGround) {
         ctx.save();
         ctx.translate(x + player.w / 2, y);
         ctx.scale(facing, 1);
         ctx.translate(-player.w / 2, 0);
 
-        // Hat
         ctx.fillStyle = C.playerRed;
         ctx.fillRect(4, 0, 14, 6);
         ctx.fillRect(2, 0, 4, 4);
 
-        // Face
         ctx.fillStyle = C.playerSkin;
         ctx.fillRect(2, 6, 16, 8);
 
-        // Eyes
         ctx.fillStyle = '#000';
         ctx.fillRect(12, 7, 3, 3);
 
-        // Mustache
         ctx.fillStyle = C.playerBrown;
         ctx.fillRect(8, 11, 10, 3);
 
-        // Body
         ctx.fillStyle = C.playerRed;
         ctx.fillRect(4, 14, 12, 8);
 
-        // Overalls
         ctx.fillStyle = '#2040c0';
         ctx.fillRect(6, 18, 8, 6);
 
-        // Legs
         var legOff = 0;
         if (!onGround) legOff = 2;
         else if (frame === 1) legOff = 2;
@@ -688,7 +945,6 @@
         ctx.fillRect(4, 24, 5, 4);
         ctx.fillRect(11, 24, 5, 4);
 
-        // Shoes
         ctx.fillStyle = C.playerBrown;
         ctx.fillRect(2, 26 + legOff, 7, 2);
         ctx.fillRect(11, 26 - legOff, 7, 2);
@@ -703,6 +959,5 @@
         requestAnimationFrame(gameLoop);
     }
 
-    // Show start screen, begin rendering
     gameLoop();
 })();
