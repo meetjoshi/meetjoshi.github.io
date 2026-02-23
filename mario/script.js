@@ -604,6 +604,13 @@
         var oy = (H - GAME_H * scale) / 2;
         ctx.fillStyle = C.sky;
         ctx.fillRect(0, 0, W, H);
+
+        var groundScreenY = oy + (GROUND_Y * TILE - camY) * scale;
+        ctx.fillStyle = C.groundTop;
+        ctx.fillRect(0, groundScreenY, W, 2 * scale);
+        ctx.fillStyle = C.ground;
+        ctx.fillRect(0, groundScreenY + 2 * scale, W, H - groundScreenY);
+
         ctx.translate(ox, oy);
         ctx.scale(scale, scale);
 
