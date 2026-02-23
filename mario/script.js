@@ -108,6 +108,7 @@
     var score = 0;
     var timeLeft = 999;
     var camX = 0;
+    var camY = 0;
     var castleReached = false;
 
     var TILE = 32;
@@ -165,7 +166,6 @@
     bindTouch('btn-left', 'ArrowLeft');
     bindTouch('btn-right', 'ArrowRight');
     bindTouch('btn-jump', ' ');
-    bindTouch('btn-down', 'ArrowDown');
 
     document.getElementById('start-screen').addEventListener('click', function () { if (!started) startGame(); });
 
@@ -592,6 +592,10 @@
         camX = player.x - GAME_W / 2 + player.w / 2;
         if (camX < 0) camX = 0;
         if (camX > LEVEL_W * TILE - GAME_W) camX = LEVEL_W * TILE - GAME_W;
+
+        camY = player.y - GAME_H * 0.55;
+        if (camY < 0) camY = 0;
+        if (camY > LEVEL_H * TILE - GAME_H) camY = LEVEL_H * TILE - GAME_H;
     }
 
     // ── Render ──────────────────────────────────────
@@ -610,29 +614,29 @@
         ctx.fillRect(0, 0, GAME_W, GAME_H);
 
         // Clouds
-        drawCloud(100 - camX * 0.3, 50, 60);
-        drawCloud(400 - camX * 0.3, 30, 80);
-        drawCloud(700 - camX * 0.3, 60, 50);
-        drawCloud(1000 - camX * 0.3, 40, 70);
-        drawCloud(1500 - camX * 0.3, 55, 60);
-        drawCloud(2200 - camX * 0.3, 35, 75);
+        drawCloud(100 - camX * 0.3, 50 - camY * 0.3, 60);
+        drawCloud(400 - camX * 0.3, 30 - camY * 0.3, 80);
+        drawCloud(700 - camX * 0.3, 60 - camY * 0.3, 50);
+        drawCloud(1000 - camX * 0.3, 40 - camY * 0.3, 70);
+        drawCloud(1500 - camX * 0.3, 55 - camY * 0.3, 60);
+        drawCloud(2200 - camX * 0.3, 35 - camY * 0.3, 75);
 
         // Hills
-        drawHill(150 - camX * 0.5, GROUND_Y * TILE, 120, 60);
-        drawHill(600 - camX * 0.5, GROUND_Y * TILE, 80, 40);
-        drawHill(1100 - camX * 0.5, GROUND_Y * TILE, 100, 50);
-        drawHill(1800 - camX * 0.5, GROUND_Y * TILE, 130, 65);
+        drawHill(150 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 120, 60);
+        drawHill(600 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 80, 40);
+        drawHill(1100 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 100, 50);
+        drawHill(1800 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 130, 65);
 
         // Bushes
-        drawBush(250 - camX * 0.5, GROUND_Y * TILE, 40, 14);
-        drawBush(550 - camX * 0.5, GROUND_Y * TILE, 30, 10);
-        drawBush(950 - camX * 0.5, GROUND_Y * TILE, 45, 15);
-        drawBush(1300 - camX * 0.5, GROUND_Y * TILE, 35, 12);
-        drawBush(1700 - camX * 0.5, GROUND_Y * TILE, 40, 14);
-        drawBush(2100 - camX * 0.5, GROUND_Y * TILE, 32, 11);
+        drawBush(250 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 40, 14);
+        drawBush(550 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 30, 10);
+        drawBush(950 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 45, 15);
+        drawBush(1300 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 35, 12);
+        drawBush(1700 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 40, 14);
+        drawBush(2100 - camX * 0.5, GROUND_Y * TILE - camY * 0.5, 32, 11);
 
         ctx.save();
-        ctx.translate(-camX, 0);
+        ctx.translate(-camX, -camY);
 
         // Tiles
         var startTX = Math.floor(camX / TILE);

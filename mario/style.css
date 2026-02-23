@@ -102,7 +102,7 @@ body {
     border: 3px solid #ffa044;
     border-radius: 8px;
     padding: 24px;
-    max-width: 480px;
+    max-width: 560px;
     width: 100%;
     position: relative;
     color: #fff;
@@ -122,15 +122,15 @@ body {
     cursor: pointer;
 }
 
-#info-content h2 { font-size: 11px; color: #ffa044; margin-bottom: 12px; letter-spacing: 2px; }
-#info-content h3 { font-size: 9px; color: #00e5ff; margin-bottom: 4px; margin-top: 12px; }
-#info-content p { font-size: 7px; color: #bbb; line-height: 2.2; }
+#info-content h2 { font-size: 14px; color: #ffa044; margin-bottom: 12px; letter-spacing: 2px; }
+#info-content h3 { font-size: 11px; color: #00e5ff; margin-bottom: 4px; margin-top: 12px; }
+#info-content p { font-size: 9px; color: #bbb; line-height: 2; }
 #info-content ul { list-style: none; padding: 0; }
-#info-content li { font-size: 7px; color: #bbb; line-height: 2.4; padding: 2px 0; }
+#info-content li { font-size: 9px; color: #bbb; line-height: 2.2; padding: 2px 0; }
 #info-content li::before { content: '> '; color: #ffa044; }
 #info-content a { color: #00e5ff; text-decoration: none; }
 #info-content .info-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-#info-content .info-tag { font-size: 6px; padding: 4px 8px; border: 1px solid #333; border-radius: 3px; color: #ddd; }
+#info-content .info-tag { font-size: 8px; padding: 4px 8px; border: 1px solid #333; border-radius: 3px; color: #ddd; }
 
 /* ── Touch Controls ──────────────────── */
 
@@ -170,7 +170,6 @@ body {
 
 .touch-btn:active { background: rgba(255, 255, 255, 0.15); }
 .touch-jump { background: rgba(255, 60, 60, 0.4); border-color: rgba(255, 60, 60, 0.5); }
-.touch-action { font-size: 12px; }
 
 @media (pointer: coarse), (max-width: 768px) {
     #touch-controls { display: flex; }
