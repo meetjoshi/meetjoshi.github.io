@@ -185,7 +185,7 @@
     }
 
     function setTile(x, y, t) { if (y >= 0 && y < LEVEL_H && x >= 0 && x < LEVEL_W) level[y][x] = t; }
-    function getTile(x, y) { if (y < 0 || y >= LEVEL_H || x < 0 || x >= LEVEL_W) return 0; return level[y][x]; }
+    function getTile(x, y) { if (y < 0 || y >= LEVEL_H || x < 0 || x >= LEVEL_W || !level[y]) return 0; return level[y][x]; }
 
     function placeCoin(x, y) { setTile(x, y, 9); }
 
@@ -350,10 +350,10 @@
             player.onGround = false;
         } else {
             if (player.vy > 0) {
-                player.y = Math.floor((player.y + player.h) / TILE) * TILE - player.h;
+                player.y = Math.floor((newY + player.h) / TILE) * TILE - player.h;
                 player.onGround = true;
             } else if (player.vy < 0) {
-                player.y = Math.floor(player.y / TILE) * TILE + TILE;
+                player.y = Math.floor(newY / TILE) * TILE + TILE;
                 // Hit block above
                 var headTX = Math.floor((player.x + player.w / 2) / TILE);
                 var headTY = Math.floor((player.y - 1) / TILE);
