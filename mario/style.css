@@ -6,7 +6,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    background: #000;
+    background: #6b8cff;
     font-family: var(--pixel);
     overflow: hidden;
     height: 100vh;

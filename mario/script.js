@@ -602,7 +602,7 @@
 
         var ox = (W - GAME_W * scale) / 2;
         var oy = (H - GAME_H * scale) / 2;
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = C.sky;
         ctx.fillRect(0, 0, W, H);
         ctx.translate(ox, oy);
         ctx.scale(scale, scale);
