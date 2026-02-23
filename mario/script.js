@@ -593,9 +593,7 @@
         if (camX < 0) camX = 0;
         if (camX > LEVEL_W * TILE - GAME_W) camX = LEVEL_W * TILE - GAME_W;
 
-        camY = player.y - GAME_H * 0.55;
-        if (camY < 0) camY = 0;
-        if (camY > LEVEL_H * TILE - GAME_H) camY = LEVEL_H * TILE - GAME_H;
+        camY = LEVEL_H * TILE - GAME_H;
     }
 
     // ── Render ──────────────────────────────────────
