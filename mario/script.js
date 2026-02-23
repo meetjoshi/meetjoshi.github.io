@@ -166,6 +166,7 @@
     bindTouch('btn-left', 'ArrowLeft');
     bindTouch('btn-right', 'ArrowRight');
     bindTouch('btn-jump', ' ');
+    bindTouch('btn-down', 'ArrowDown');
 
     document.getElementById('start-screen').addEventListener('click', function () { if (!started) startGame(); });
 
