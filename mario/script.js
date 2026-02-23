@@ -3,7 +3,7 @@
     var canvas = document.getElementById('game');
     var ctx = canvas.getContext('2d');
     var W, H, scale;
-    var GAME_W = 800, GAME_H = 450;
+    var GAME_W = 640, GAME_H = 360;
 
     function resize() {
         W = window.innerWidth;
@@ -112,7 +112,7 @@
 
     var TILE = 32;
     var GRAVITY = 0.6;
-    var JUMP_FORCE = -10;
+    var JUMP_FORCE = -11;
     var MAX_SPEED = 4;
     var ACCEL = 0.4;
     var FRICTION = 0.25;
@@ -172,7 +172,7 @@
     // ── Player ──────────────────────────────────────
     var player = {
         x: 3 * TILE, y: (GROUND_Y - 2) * TILE,
-        w: 20, h: 28,
+        w: 24, h: 32,
         vx: 0, vy: 0,
         onGround: false,
         facing: 1,
@@ -256,7 +256,7 @@
         // Coin arc
         placeCoin(72, 9);
         placeCoin(73, 8);
-        placeCoin(74, 7);
+        placeCoin(74, 8);
         placeCoin(75, 8);
         placeCoin(76, 9);
 
@@ -914,8 +914,8 @@
     function drawPlayer(x, y, facing, frame, onGround) {
         ctx.save();
         ctx.translate(x + player.w / 2, y);
-        ctx.scale(facing, 1);
-        ctx.translate(-player.w / 2, 0);
+        ctx.scale(facing * player.w / 20, player.h / 28);
+        ctx.translate(-10, 0);
 
         ctx.fillStyle = C.playerRed;
         ctx.fillRect(4, 0, 14, 6);
