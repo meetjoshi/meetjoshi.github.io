@@ -1,0 +1,61 @@
+name: claude-review
+
+# Claude Code reviews every pull request and posts its findings as PR comments: inline on the line at
+# fault, plus one summary comment. It's an extra reviewer, not a gate: it never approves or requests
+# changes. Needs the Claude GitHub App on this repo and the repo secret CLAUDE_CODE_OAUTH_TOKEN (or
+# ANTHROPIC_API_KEY). The app only runs this file as it is on the default branch, so a PR that edits
+# it is skipped.
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+permissions:
+  contents: read
+
+# A newer push to a PR cancels the review of the older one.
+concurrency:
+  group: claude-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    # Drafts wait until they're ready. PRs from forks and Dependabot can't read repo secrets.
+    if: >-
+      !github.event.pull_request.draft
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write  # to post the review comments
+      id-token: write  # the action trades this for a Claude GitHub App token
+    steps:
+      # Pinned to commit SHAs (a tag can be moved to different code); the comment names the tag.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: anthropics/claude-code-action@a26b07d8c778b0c43f64618e5fd29fd0f8af72e8  # v1.0.250
+        with:
+          # Whichever secret is set is used.
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Review this pull request. Read the diff with `gh pr diff` and the description with
+            `gh pr view`, and read the surrounding code in the checkout where you need context.
+
+            Report only must-fix findings:
+            - correctness bugs: wrong results, crashes, broken edge cases the code claims to handle
+            - security gaps: injection, leaked secrets, unvalidated input, missing auth checks
+            - breakage: changed behaviour that callers, tests or docs still rely on
+            Leave out style, naming, minor cleanups and speculative suggestions entirely.
+
+            For each finding, post an inline comment on the line at fault saying what goes wrong and
+            for what input, and how to fix it. Then post one summary comment listing the findings, or
+            saying that you found nothing that must change. Don't approve or request changes.
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Read,Glob,Grep"
